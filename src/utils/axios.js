@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'https://lehae-backend.onrender.com', // Replace with your Render URL
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
           return Promise.reject(error);
         }
         console.log('Attempting token refresh');
-        const response = await axios.post('http://localhost:8000/api/token/refresh/', {
+        const response = await axios.post('https://lehae-backend.onrender.com/api/token/refresh/', {
           refresh: refreshToken,
         });
         const { access } = response.data;
