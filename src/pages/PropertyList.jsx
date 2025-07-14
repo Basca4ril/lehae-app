@@ -39,7 +39,7 @@ const PropertyList = () => {
         return;
       }
 
-      // Map properties with safe checks
+      // Map properties with safe checks for images
       const mappedProperties = data.map(item => ({
         id: item.id || null,
         area: item.area || 'Unknown',
@@ -48,9 +48,13 @@ const PropertyList = () => {
         is_approved: item.is_approved || false,
         is_favorited: item.is_favorited || false,
         images: Array.isArray(item.images) && item.images.length > 0 
-          ? item.images 
-          : item.image_url 
-            ? [{ image_url: item.image_url }] 
+          ? item.images.map(img => ({
+              id: img.id,
+              image_url: img.image_url || `${axiosInstance.defaults.baseURL}/media/${img.image.name.split('/').pop()}`, // Fallback
+              uploaded_at: img.uploaded_at,
+            }))
+          : item.image_url
+            ? [{ image_url: item.image_url || `${axiosInstance.defaults.baseURL}/media/${item.image.name.split('/').pop()}` }]
             : [],
         landlord_username: item.landlord_username || 'Unknown',
         deposit: item.deposit != null ? item.deposit : null,

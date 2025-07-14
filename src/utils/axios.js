@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://lehae-backend.onrender.com', // Replace with your Render URL
+  baseURL: 'https://lehae-backend.onrender.com', // Your Render URL
   headers: {
     'Content-Type': 'application/json',
   },
