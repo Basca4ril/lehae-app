@@ -30,7 +30,6 @@ const PropertyList = () => {
       const response = await axiosInstance.get('/api/properties/', { params: filters });
       console.log('API Response:', JSON.stringify(response.data, null, 2));
 
-      // Handle array or paginated response
       const data = Array.isArray(response.data) ? response.data : response.data.results || [];
       if (!Array.isArray(data)) {
         console.error('Expected array, received:', data);
@@ -39,7 +38,6 @@ const PropertyList = () => {
         return;
       }
 
-      // Map properties with safe checks for images
       const mappedProperties = data.map(item => ({
         id: item.id || null,
         area: item.area || 'Unknown',
@@ -50,12 +48,12 @@ const PropertyList = () => {
         images: Array.isArray(item.images) && item.images.length > 0 
           ? item.images.map(img => ({
               id: img.id,
-              image_url: img.image_url || `${axiosInstance.defaults.baseURL}/media/${img.image.name.split('/').pop()}`, // Fallback
+              image_url: img.image_url || `${axiosInstance.defaults.baseURL}/media/${img.image?.name?.split('/').pop() || 'default.jpg'}`,
               uploaded_at: img.uploaded_at,
             }))
           : item.image_url
-            ? [{ image_url: item.image_url || `${axiosInstance.defaults.baseURL}/media/${item.image.name.split('/').pop()}` }]
-            : [],
+            ? [{ image_url: item.image_url || `${axiosInstance.defaults.baseURL}/media/${item.image?.name?.split('/').pop() || 'default.jpg'}` }]
+            : [{ image_url: `${axiosInstance.defaults.baseURL}/media/default.jpg` }],
         landlord_username: item.landlord_username || 'Unknown',
         deposit: item.deposit != null ? item.deposit : null,
         viewing_fee: item.viewing_fee != null ? item.viewing_fee : null,
@@ -119,16 +117,16 @@ const PropertyList = () => {
       <h1 className="text-4xl md:text-5xl font-heading font-bold text-secondary mb-12">
         {t('Explore Properties')}
       </h1>
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 relative">
         <motion.div
-          className="lg:col-span-2 bg-white rounded-2xl shadow-neumorphic p-8 sticky top-4"
+          className="lg:col-span-2 bg-white rounded-2xl shadow-neumorphic p-8 sticky top-4 z-10"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
           <PropertyFilter onFilter={setFilters} />
         </motion.div>
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 z-0">
           {error && (
             <motion.div
               className="mb-8 p-4 bg-red-50 text-red-600 rounded-lg"
