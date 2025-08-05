@@ -61,12 +61,12 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="text-gray-600">
                 <a href="mailto:info@lehae.com" className="hover:text-primary">
-                  info@lehae.com
+                  basianchls@gmail.com
                 </a>
               </li>
               <li className="text-gray-600">
                 <a href="tel:+1234567890" className="hover:text-primary">
-                  +1 (234) 567-890
+                  +27 69 434 9760
                 </a>
               </li>
             </ul>
